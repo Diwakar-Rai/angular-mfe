@@ -9,6 +9,9 @@ module.exports = withModuleFederationPlugin({
   exposes: {
     "./Routes": "./src/app/app.routes.ts",
   },
+  remotes: {
+    shell: "http://localhost:4200/remoteEntry.js",
+  },
 
   shared: {
     ...shareAll({

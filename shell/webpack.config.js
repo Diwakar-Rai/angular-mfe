@@ -8,6 +8,9 @@ module.exports = withModuleFederationPlugin({
     "auth-mf": "http://localhost:4201/remoteEntry.js",
     "notes-mf": "http://localhost:4202/remoteEntry.js",
   },
+  exposes: {
+    "./EventBus": "./src/app/core/event-bus.service.ts",
+  },
   shared: {
     ...shareAll({
       singleton: true,

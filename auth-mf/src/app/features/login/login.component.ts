@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { loadRemoteModule } from '@angular-architects/module-federation';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +22,19 @@ export class LoginComponent {
     email: new FormControl(''),
     password: new FormControl(''),
   });
-  login() {
-    console.log(this.form.value);
+  async login() {
+    const { EventBusService } = await loadRemoteModule({
+      type: 'module',
+      exposedModule: './EventBus',
+      remoteEntry: 'http://localhost:4200/remoteEntry.js',
+    });
+    const eventBus: any = inject(EventBusService);
     this.http
       .post('http://localhost:4000/auth/login', {
         ...this.form.value,
       })
       .subscribe((res: any) => {
+        eventBus.emitLogin({ data: res });
         localStorage.setItem('token', res.token);
         window.location.href = '/notes';
       });
