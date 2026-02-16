@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { RouterLink } from '@angular/router';
@@ -19,18 +19,21 @@ import { RouterLink } from '@angular/router';
   `,
 })
 export class LoginComponent {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private injector: Injector,
+  ) {}
   form = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
   });
   async login() {
-    const { EventBusService } = await loadRemoteModule({
+    const remote = await loadRemoteModule({
       type: 'module',
       exposedModule: './EventBus',
       remoteEntry: 'http://localhost:4200/remoteEntry.js',
     });
-    const eventBus: any = inject(EventBusService);
+    const eventBus: any = this.injector.get(remote.EventBusService);
     this.http
       .post('http://localhost:4000/auth/login', {
         ...this.form.value,

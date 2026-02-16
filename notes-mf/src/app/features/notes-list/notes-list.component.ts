@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { loadRemoteModule } from '@angular-architects/module-federation';
@@ -17,14 +17,17 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
 })
 export class NotesListComponent {
   private http = inject(HttpClient);
+  private injector = inject(Injector);
   notes: any[] = [];
   ngOnInit() {
+    console.log('Notes app');
     loadRemoteModule({
       type: 'module',
       remoteEntry: 'http://localhost:4200/remoteEntry.js',
       exposedModule: './EventBus',
     }).then((m) => {
-      const eventBus: any = inject(m.EventBusService);
+      const EventBusClass = m.EventBusService || m.default?.EventBusService;
+      const eventBus = this.injector.get(EventBusClass);
       eventBus.login$.subscribe((data: any) => {
         console.log('User logged in:', data);
       });
