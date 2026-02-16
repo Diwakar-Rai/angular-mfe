@@ -2,17 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { loadRemoteModule } from '@angular-architects/module-federation';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   template: `
     <h2>Login Page (Auth Microfrontend)</h2>
     <form [formGroup]="form" (ngSubmit)="login()">
       <input type="text" placeholder="email" formControlName="email" />
       <input type="text" placeholder="password" formControlName="password" />
       <button type="submit">Login</button>
+      <a [routerLink]="'/auth/register'">Register</a>
     </form>
   `,
 })
