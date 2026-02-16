@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/module-federation';
+import { NoteForm } from './features/note-form/note-form.component';
 
 export const NOTES_ROUTES: Routes = [
   {
@@ -11,4 +12,5 @@ export const NOTES_ROUTES: Routes = [
         exposedModule: './Routes',
       }),
   },
+  { path: 'create', component: NoteForm },
 ];

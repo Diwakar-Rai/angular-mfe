@@ -4,6 +4,7 @@ const {
 } = require("@angular-architects/module-federation/webpack");
 
 module.exports = withModuleFederationPlugin({
+  name: "shell",
   remotes: {
     "auth-mf": "http://localhost:4201/remoteEntry.js",
     "notes-mf": "http://localhost:4202/remoteEntry.js",
